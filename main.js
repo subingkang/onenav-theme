@@ -14,13 +14,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const fixedHeader = document.querySelector('.fixed-header');
     const allButton = document.querySelector('.category-btn[data-target="all"]');
 
-    // --- 计算固定头部高度，用于滚动偏移 ---
+    // --- 动态计算并更新 body padding-top ---
     let headerOffsetHeight = 0;
-    function calculateHeaderHeight() {
-        headerOffsetHeight = fixedHeader ? fixedHeader.offsetHeight : 0;
+    function updateBodyPaddingTop() {
+        if (fixedHeader) {
+            // 获取固定头部的实际高度
+            headerOffsetHeight = fixedHeader.offsetHeight;
+            // 更新 body 的 padding-top
+            document.body.style.paddingTop = headerOffsetHeight + 'px';
+        }
     }
-    calculateHeaderHeight();
-    window.addEventListener('resize', calculateHeaderHeight); // 窗口大小改变时重新计算
+    
+    // 初始化时计算一次
+    updateBodyPaddingTop();
+    
+    // 窗口大小改变时重新计算（处理移动端横屏切换、分类按钮换行等情况）
+    window.addEventListener('resize', function() {
+        // 使用 setTimeout 确保 DOM 重排完成后再计算
+        setTimeout(updateBodyPaddingTop, 100);
+    });
+    
+    // 监听固定头部高度变化（使用 ResizeObserver 更精确）
+    if (window.ResizeObserver && fixedHeader) {
+        const headerResizeObserver = new ResizeObserver(function(entries) {
+            for (let entry of entries) {
+                // 当固定头部高度变化时，更新 body padding
+                headerOffsetHeight = entry.contentRect.height;
+                document.body.style.paddingTop = headerOffsetHeight + 'px';
+            }
+        });
+        headerResizeObserver.observe(fixedHeader);
+    }
 
     /**
      * 激活对应分类按钮
@@ -115,6 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- 搜索功能 ---
     if (searchBar) {
+        const mainContent = document.querySelector('.main-content');
+        const pageWrapper = document.querySelector('.page-wrapper');
+        
         const handleSearch = function () {
             const keyword = searchBar.value.trim().toLowerCase();
 
@@ -140,24 +167,43 @@ document.addEventListener('DOMContentLoaded', function () {
                     resultCountSpan.textContent = matchCount;
                 }
 
+                // 进入搜索模式
+                if (mainContent) {
+                    mainContent.classList.add('search-mode');
+                }
+                
+                // 关键修复：确保page-wrapper在搜索模式下高度正确
+                if (pageWrapper) {
+                    pageWrapper.style.minHeight = 'calc(100vh - ' + headerOffsetHeight + 'px)';
+                }
+                
                 // 显示搜索结果容器，隐藏分类内容
                 if (searchResultsContainer) {
                     searchResultsContainer.style.display = 'block';
+                    searchResultsContainer.style.height = 'auto';
                 }
                 document.querySelectorAll('.category-group').forEach(group => {
                     group.style.display = 'none';
                 });
 
-                // 动态调整 search-results 高度并滚动到顶部
-                const resultsHeight = searchResultsList.scrollHeight + 60; // 60px for header padding
-                searchResultsContainer.style.height = `${resultsHeight}px`;
+                // 滚动到搜索结果顶部
                 const searchTop = searchResultsContainer.offsetTop - headerOffsetHeight;
                 window.scrollTo({ top: searchTop, behavior: 'smooth' });
             } else {
+                // 退出搜索模式
+                if (mainContent) {
+                    mainContent.classList.remove('search-mode');
+                }
+                
+                // 恢复page-wrapper的原始最小高度设置
+                if (pageWrapper) {
+                    pageWrapper.style.minHeight = '';
+                }
+                
                 // 关键词为空，隐藏搜索结果，显示分类内容
                 if (searchResultsContainer) {
                     searchResultsContainer.style.display = 'none';
-                    searchResultsContainer.style.height = 'auto'; // 恢复默认高度
+                    searchResultsContainer.style.height = 'auto';
                 }
                 document.querySelectorAll('.category-group').forEach(group => {
                     group.style.display = 'block';

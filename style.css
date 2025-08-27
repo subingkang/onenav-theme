@@ -1,4 +1,5 @@
 /* 
+/* 
  * Modern主题样式文件
  * 作者: subk
  * 包含整个主题的所有CSS样式定义
@@ -15,11 +16,12 @@
     --border-color: #ebeef5;         /* 边框颜色 */
     --card-bg: #ffffff;              /* 卡片背景色 */
     --shadow-color: rgba(0, 0, 0, 0.1); /* 阴影颜色 */
-    /* --- 调整后的高度变量 --- */
-    --fixed-header-height: 380px; /* 固定头部总高度 */
-    --banner-height: 250px;       /* Banner 高度 */
-    --search-and-nav-height: calc(var(--fixed-header-height) - var(--banner-height)); /* 搜索和导航区域高度 */
-    --scroll-offset: calc(var(--fixed-header-height) + 20px); /* 滚动偏移量 */
+    /* --- 调整为弹性高度变量 --- */
+    --banner-height: 250px;          /* Banner 高度 (保持固定) */
+    --search-nav-padding: 20px;      /* 搜索和导航区域的内边距 */
+    --search-box-height: 44px;       /* 搜索框高度 */
+    --nav-button-height: 40px;       /* 导航按钮高度 */
+    --nav-gap: 15px;                 /* 导航按钮间距 */
     /* 彩色图标滤镜 */
     --icon-filter-1: hue-rotate(0deg) saturate(1.5);      /* 原始色相，高饱和 */
     --icon-filter-2: hue-rotate(45deg) saturate(1.5);     /* 旋转45度色相 */
@@ -45,14 +47,23 @@
     padding: 0;                     /* 清除内边距 */
     box-sizing: border-box;         /* 使用边框盒模型 */
 }
+
+/* 确保 html 和 body 占满整个视口 */
+html, body {
+    height: 100%;                   /* 高度100% */
+    margin: 0;                      /* 清除外边距 */
+    padding: 0;                     /* 清除内边距 */
+}
 /* 页面基础样式 */
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;  /* 设置字体族 */
     background-color: var(--bg-color);      /* 页面背景色 */
     color: var(--text-color);               /* 文字颜色 */
     line-height: 1.6;               /* 行高 */
-    /* --- 调整 body padding-top 以匹配新的固定头部高度 --- */
-    padding-top: var(--fixed-header-height);
+    /* --- 移除初始 padding-top，完全由JavaScript动态控制 --- */
+    /* --- 关键修复：不使用flex布局，采用传统布局方式 --- */
+    margin: 0;                      /* 确保无外边距 */
+    padding: 0;                     /* 重置padding，让fixed-header正确定位 */
 }
 /* 固定头部区域 */
 .fixed-header {
@@ -60,15 +71,19 @@ body {
     top: 0;                         /* 顶部对齐 */
     left: 0;                        /* 左侧对齐 */
     width: 100%;                    /* 宽度100% */
-    /* --- 调整固定头部总高度 --- */
-    height: var(--fixed-header-height);
+    /* --- 修改为自适应高度，基于内容动态计算 --- */
+    min-height: calc(var(--banner-height) + 120px); /* 最小高度：Banner + 基础搜索导航区域 */
+    height: auto;                   /* 自适应高度 */
     background: white;              /* 背景色 */
     z-index: 1000;                  /* 层级设置，确保在最上层 */
     /* 更柔和的阴影效果 */
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-    /* 添加 overflow: hidden 确保内容不超出指定高度 */
-    overflow: hidden;
+    /* --- 移除 overflow: hidden，允许内容自然扩展 --- */
+    overflow: visible;
+    /* --- 添加弹性布局，保证内部元素正确排列 --- */
+    display: flex;
+    flex-direction: column;
 }
 /* 顶部Banner区域样式 */
 .banner {
@@ -165,6 +180,10 @@ body {
     max-width: 100%;          /* 确保最大宽度也是100% */
     padding: 0 20px;          /* 左右内边距，控制内容与屏幕边缘的距离，可根据需要调整 */
     margin: 0;                /* 移除默认的左右auto margin */
+    /* --- 添加弹性布局，使内部元素能够自然排列 --- */
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* 占用剩余空间 */
     /* --- 保持原有的其他样式，如搜索框和分类导航的样式 --- */
 }
 /* 分类导航栏 */
@@ -180,9 +199,9 @@ body {
     scrollbar-width: none;
     /* --- 调整项目间距和外边距 --- */
     gap: 15px;                      /* 项目间距 (增大) */
-    /* --- 关键修改：减少分类导航的下边距 --- */
-    margin: 30px 0 10px 0;          /* 上外边距30px, 左右自动, 下外边距10px (从30px减小) */
-    padding-bottom: 20px;           /* 下内边距 (保持不变或根据需要调整) */
+    /* --- 修改为弹性布局中的自然边距 --- */
+    margin: 20px 0;                 /* 上下外边距，左右为0 */
+    padding: 0 0 20px 0;            /* 内边距：上0，右左为0，下20px */
     /* --- 其他原有样式 ... --- */
 }
 /* 隐藏 Webkit 浏览器 (Chrome, Safari) 的滚动条 (可选) */
@@ -228,8 +247,6 @@ body {
 /* 分类内容区域 */
 .category-group {
     margin-bottom: 40px;            /* 下边距 */
-    /* --- 调整 scroll-margin-top 以匹配新的固定头部高度 --- */
-    scroll-margin-top: var(--scroll-offset);
 }
 /* 最后一个分类区域去除下边距 */
 .category-group:last-child {
@@ -238,9 +255,18 @@ body {
 /* 搜索结果容器 */
 .search-results {
     display: none;                  /* 默认隐藏 */
-    margin-bottom: 40px;            /* 下边距 */
-    /* --- 调整 scroll-margin-top --- */
-    scroll-margin-top: var(--scroll-offset);
+    margin-bottom: 0;               /* 移除底部边距，确保footer贴底 */
+    /* 添加搜索结果区域的动态高度控制 */
+    min-height: auto;               /* 最小高度自适应 */
+    max-height: none;               /* 最大高度不限制 */
+    /* 添加过渡动画 */
+    transition: all 0.3s ease;
+}
+
+/* 搜索模式下的搜索结果容器 - 确保footer贴底 */
+.main-content.search-mode .search-results {
+    margin-bottom: 0;               /* 搜索模式下移除底部边距，让footer贴底 */
+    flex: 1 0 auto;                 /* 关键修复：让搜索结果容器占用剩余空间 */
 }
 /* 分类标题栏 */
 .category-header {
@@ -249,8 +275,6 @@ body {
     margin-bottom: 20px;            /* 下边距 */
     padding-bottom: 10px;           /* 下内边距 */
     border-bottom: 2px solid var(--border-color);  /* 底部边框 */
-    /* --- 调整 scroll-margin-top --- */
-    scroll-margin-top: var(--scroll-offset);
     gap: 12px; /* 图标和文字间距 (增大) */
 }
 /* 分类标题样式 */
@@ -444,44 +468,18 @@ body {
 .websites-list .website-item:nth-child(8n+8) .website-icon:not(:has(> img)):not(:empty) {
     --icon-bg-color: var(--icon-bg-color-8);
 }
-/* 页面底部 */
-footer {
-    text-align: center;             /* 文字居中 */
-    padding: 30px 0;                /* 上下内边距 */
-    margin-top: 30px;               /* 上外边距 */
-    /* --- 修改背景色 --- */
-    background: #2C3E50;            /* 设置背景色为 #2C3E50 */
-    /* --- 修改文字颜色 --- */
-    color: var(--info-color);       /* 设置默认文字颜色为灰色 */
-}
-/* --- 为 footer 内的链接添加特殊样式 --- */
-footer a {
-    /* 继承父元素 (footer) 的颜色 */
-    color: inherit;
-    /* 去除下划线 */
-    text-decoration: none;
-}
-/* --- 为 footer 内的链接添加悬停效果 (可选) --- */
-footer a:hover {
-    /* 可以稍微调整颜色或添加下划线表示悬停 */
-    /* 例如，稍微提亮颜色: */
-    /* color: #b0b0b0; */
-    /* 或者添加下划线: */
-    text-decoration: underline;
-    /* 这里我们先不加特殊悬停效果，保持简洁 */
-}
+
 /* 响应式设计 - 平板及以下设备 */
 @media (max-width: 768px) {
     :root {
-        /* --- 调整移动端的变量 --- */
-        --fixed-header-height: 330px; /* 移动端固定头部总高度 (调整) */
-        --banner-height: 200px;       /* 移动端 Banner 高度 (调整) */
-        --scroll-offset: calc(var(--fixed-header-height) + 20px);
+        /* --- 移动端优化变量 --- */
+        --banner-height: 180px;       /* 移动端 Banner 高度 (减小) */
+        --nav-gap: 10px;              /* 移动端导航按钮间距 */
     }
-    /* 调整body padding */
-    body {
-        padding-top: var(--fixed-header-height);
-    }
+    /* 调整body padding，移除固定值，由JavaScript动态控制 */
+    /* body {
+        padding-top: calc(var(--banner-height) + 100px);
+    } */
     /* Banner高度调整 */
     .banner {
         height: var(--banner-height);
@@ -496,20 +494,38 @@ footer a:hover {
     }
     /* 搜索框外边距调整 (移动端也需要调整负边距) */
     .search-box {
-        margin: -30px auto 25px; /* 调整移动端外边距 */
+        margin: -20px auto 20px; /* 调整移动端外边距 */
     }
     /* --- 移动端分类导航栏调整 --- */
     .category-nav {
         /* 在移动端允许换行以适应小屏幕 */
         flex-wrap: wrap;
-        gap: 10px; /* 移动端间距稍小 */
-        margin: 25px 0 5px 0; /* 调整移动端外边距，下边距更小 */
-        padding-bottom: 10px; /* 调整移动端内边距 */
+        gap: var(--nav-gap); /* 使用变量控制间距 */
+        margin: 15px 0;      /* 移动端更小的外边距 */
+        padding: 0 0 15px 0; /* 移动端更小的内边距 */
+        /* 移动端可以显示滚动条，方便用户知道可以滚动 */
+        overflow-x: auto;
+        scrollbar-width: thin; /* Firefox 显示细滚动条 */
+    }
+    /* 移动端显示细滚动条 (Webkit) */
+    .category-nav::-webkit-scrollbar {
+        height: 3px;
+    }
+    .category-nav::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.1);
+        border-radius: 3px;
+    }
+    .category-nav::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 3px;
     }
     /* 分类按钮内边距和字体大小调整 */
     .category-btn {
-        padding: 8px 18px; /* 调整移动端内边距 */
+        padding: 8px 16px; /* 调整移动端内边距 */
         font-size: 14px;   /* 调整移动端字体大小 */
+        /* 移动端保持不换行 */
+        white-space: nowrap;
+        flex-shrink: 0;    /* 防止按钮被压缩 */
     }
     /* 网站链接项最小宽度调整 */
     .website-item {
@@ -537,10 +553,6 @@ footer a:hover {
     .container {
         padding: 15px;
     }
-    /* 调整scroll-margin-top */
-    .category-group, .category-header, .search-results {
-        scroll-margin-top: var(--scroll-offset);
-    }
     /* 移动端悬停效果调整 - 移除旧的悬停样式 */
     /*
     .website-item:hover .website-info h3,
@@ -556,20 +568,62 @@ footer a:hover {
 .page-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 确保包装器占用整个视口高度 */
+    /* --- 关键修复：确保page-wrapper占满剩余视口高度 --- */
+    min-height: calc(100vh - var(--banner-height) - 120px); /* 减去固定头部的最小高度 */
 }
 
 /* 主要内容占用可用空间 */
 .main-content {
-    flex: 1 0 auto; /* 允许主要内容增长，但不会缩减到低于其内容高度 */
+    /* --- 关键修复：让main-content在page-wrapper内部占用剩余空间 --- */
+    flex: 1 0 auto; /* 在page-wrapper内部占用剩余空间，保证footer在底部 */
+    /* 添加搜索模式的特殊处理 */
+    transition: none; /* 移除过渡效果，避免布局闪烁 */
+    /* --- 确保在内容不足时能够撑满page-wrapper --- */
+    min-height: 0;
+}
+
+/* 搜索模式下的主要内容区域 - 关键修复 */
+.main-content.search-mode {
+    flex: 1 0 auto; /* 搜索模式下仍然占用剩余空间，确保footer贴底 */
+}
+
+/* 搜索模式下的page-wrapper - 关键修复 */
+.main-content.search-mode ~ footer {
+    margin-top: auto; /* 确保footer在搜索模式下也能贴底 */
+}
+
+/* 搜索模式下的容器样式优化 - 减少底部内边距 */
+.main-content.search-mode .container {
+    padding-bottom: 10px;           /* 搜索模式下减少底部内边距 */
 }
 
 /* 页脚保持在底部 */
 footer {
-    flex-shrink: 0; /* 防止页脚缩减 */
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 30px;
-    background: #2C3E50;
-    color: var(--info-color);
+    flex-shrink: 0;                 /* 防止页脚缩减 */
+    text-align: center;             /* 文字居中 */
+    padding: 30px 0;                /* 上下内边距 */
+    /* --- 关键修复：移除所有margin，确保footer紧贴内容 --- */
+    margin: 0;                      /* 确保无外边距 */
+    /* --- 修改背景色 --- */
+    background: #2C3E50;            /* 设置背景色为 #2C3E50 */
+    /* --- 修改文字颜色 --- */
+    color: var(--info-color);       /* 设置默认文字颜色为灰色 */
+}
+
+/* --- 为 footer 内的链接添加特殊样式 --- */
+footer a {
+    /* 继承父元素 (footer) 的颜色 */
+    color: inherit;
+    /* 去除下划线 */
+    text-decoration: none;
+}
+
+/* --- 为 footer 内的链接添加悬停效果 (可选) --- */
+footer a:hover {
+    /* 可以稍微调整颜色或添加下划线表示悬停 */
+    /* 例如，稍微提亮颜色: */
+    /* color: #b0b0b0; */
+    /* 或者添加下划线: */
+    text-decoration: underline;
+    /* 这里我们先不加特殊悬停效果，保持简洁 */
 }
