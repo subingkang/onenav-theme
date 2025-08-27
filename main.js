@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function () {
         allButton.addEventListener('click', function (e) {
             e.preventDefault();
             window.location.hash = '';
-            activateCategoryButton(); // 激活 "全部" 按钮
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // 滚动到顶部
+            activateCategoryButton();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 
@@ -79,53 +79,39 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateCategoryOnScroll() {
         if (!ticking) {
             window.requestAnimationFrame(function () {
-                // 只有在没有特定锚点时才根据滚动位置更新（避免与锚点跳转冲突）
-                // 但为了实现滚动时始终激活对应按钮，我们去掉这个判断
-                // if (!window.location.hash) {
-                    let currentActiveGroupId = 'all'; // 默认为 "全部"
+                let currentActiveGroupId = 'all';
 
-                    // 遍历所有分类组，找出当前视口最顶部的
-                    for (let i = 0; i < categoryGroups.length; i++) {
-                        const group = categoryGroups[i];
-                        const rect = group.getBoundingClientRect();
-                        // 判断元素顶部是否进入或穿过固定头部下方的判定区域
-                        // 使用一个小的正值（例如 10px）作为缓冲区，更灵敏
-                        if (rect.top <= headerOffsetHeight + 10) {
-                            currentActiveGroupId = group.id.replace('category-', '');
-                        } else {
-                            // 一旦发现一个元素顶部在判定区域下方，后面的元素必然也在下方
-                            // 所以可以停止循环
-                            break;
-                        }
+                for (let i = 0; i < categoryGroups.length; i++) {
+                    const group = categoryGroups[i];
+                    const rect = group.getBoundingClientRect();
+                    if (rect.top <= headerOffsetHeight + 10) {
+                        currentActiveGroupId = group.id.replace('category-', '');
+                    } else {
+                        break;
                     }
+                }
 
-                    // 移除所有按钮的激活状态
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    
-                    // 激活对应的按钮
-                    let buttonToActivate;
-                    if (currentActiveGroupId === 'all') {
-                        buttonToActivate = document.querySelector('.category-btn[data-target="all"]');
-                    } else {
-                        buttonToActivate = document.querySelector(`.category-btn[href="#category-${currentActiveGroupId}"]`);
-                    }
-                    
-                    if (buttonToActivate) {
-                        buttonToActivate.classList.add('active');
-                    } else {
-                        // Fallback: 如果找不到，激活 "全部"
-                        document.querySelector('.category-btn[data-target="all"]')?.classList.add('active');
-                    }
-                // }
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                
+                let buttonToActivate;
+                if (currentActiveGroupId === 'all') {
+                    buttonToActivate = document.querySelector('.category-btn[data-target="all"]');
+                } else {
+                    buttonToActivate = document.querySelector(`.category-btn[href="#category-${currentActiveGroupId}"]`);
+                }
+                
+                if (buttonToActivate) {
+                    buttonToActivate.classList.add('active');
+                } else {
+                    document.querySelector('.category-btn[data-target="all"]')?.classList.add('active');
+                }
                 ticking = false;
             });
             ticking = true;
         }
     }
 
-    // 添加滚动事件监听器
     window.addEventListener('scroll', updateCategoryOnScroll, { passive: true });
-
 
     // --- 搜索功能 ---
     if (searchBar) {
@@ -133,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const keyword = searchBar.value.trim().toLowerCase();
 
             if (keyword.length > 0) {
-                // --- 修复：每次搜索前先清空旧结果 ---
+                // 清空旧结果
                 searchResultsList.innerHTML = '';
 
                 const websiteItems = document.querySelectorAll('.website-item');
@@ -144,14 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     const description = item.dataset.desc?.toLowerCase() || '';
 
                     if (title.includes(keyword) || description.includes(keyword)) {
-                        // --- 修复：克隆节点并添加到结果列表 ---
                         const clonedItem = item.cloneNode(true);
                         searchResultsList.appendChild(clonedItem);
                         matchCount++;
                     }
                 });
 
-                // 更新结果计数
                 if (resultCountSpan) {
                     resultCountSpan.textContent = matchCount;
                 }
@@ -164,21 +148,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     group.style.display = 'none';
                 });
 
+                // 动态调整 search-results 高度并滚动到顶部
+                const resultsHeight = searchResultsList.scrollHeight + 60; // 60px for header padding
+                searchResultsContainer.style.height = `${resultsHeight}px`;
+                const searchTop = searchResultsContainer.offsetTop - headerOffsetHeight;
+                window.scrollTo({ top: searchTop, behavior: 'smooth' });
             } else {
                 // 关键词为空，隐藏搜索结果，显示分类内容
                 if (searchResultsContainer) {
                     searchResultsContainer.style.display = 'none';
+                    searchResultsContainer.style.height = 'auto'; // 恢复默认高度
                 }
                 document.querySelectorAll('.category-group').forEach(group => {
                     group.style.display = 'block';
                 });
-                // 可选：清空搜索框内容和结果列表
-                // searchBar.value = '';
                 if (searchResultsList) {
-                     searchResultsList.innerHTML = '';
+                    searchResultsList.innerHTML = '';
                 }
                 if (resultCountSpan) {
-                     resultCountSpan.textContent = '0';
+                    resultCountSpan.textContent = '0';
                 }
             }
         };
@@ -190,22 +178,8 @@ document.addEventListener('DOMContentLoaded', function () {
         searchBar.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                handleSearch(); // 调用搜索处理函数
+                handleSearch();
             }
         });
     }
-
-    // --- 处理锚点跳转后的初始滚动位置 ---
-    // (这个逻辑也可以通过 CSS scroll-margin-top 更好地处理，但如果需要 JS 控制也可以保留)
-    /*
-    if (window.location.hash) {
-        setTimeout(() => {
-            const targetElement = document.querySelector(window.location.hash);
-            if (targetElement) {
-                const targetTop = targetElement.offsetTop - headerOffsetHeight;
-                window.scrollTo({ top: targetTop, behavior: 'smooth' });
-            }
-        }, 100); // 稍微延迟以确保页面加载完成
-    }
-    */
 });

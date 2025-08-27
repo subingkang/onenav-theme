@@ -3,7 +3,6 @@
  * 作者: subk
  * 包含整个主题的所有CSS样式定义
  */
-
 /* CSS变量定义，便于统一管理和修改主题色 */
 :root {
     --primary-color: #409EFF;        /* 主色调：蓝色 */
@@ -21,7 +20,6 @@
     --banner-height: 250px;       /* Banner 高度 */
     --search-and-nav-height: calc(var(--fixed-header-height) - var(--banner-height)); /* 搜索和导航区域高度 */
     --scroll-offset: calc(var(--fixed-header-height) + 20px); /* 滚动偏移量 */
-
     /* 彩色图标滤镜 */
     --icon-filter-1: hue-rotate(0deg) saturate(1.5);      /* 原始色相，高饱和 */
     --icon-filter-2: hue-rotate(45deg) saturate(1.5);     /* 旋转45度色相 */
@@ -31,7 +29,6 @@
     --icon-filter-6: hue-rotate(225deg) saturate(1.5);    /* 旋转225度色相 */
     --icon-filter-7: hue-rotate(270deg) saturate(1.5);    /* 旋转270度色相 */
     --icon-filter-8: hue-rotate(315deg) saturate(1.5);    /* 旋转315度色相 */
-
     /* 备用基础背景色 (如果不用filter) */
     --icon-bg-color-1: #409EFF; /* 蓝 */
     --icon-bg-color-2: #67C23A; /* 绿 */
@@ -42,14 +39,12 @@
     --icon-bg-color-7: #FF69B4; /* 粉 */
     --icon-bg-color-8: #20B2AA; /* 青 */
 }
-
 /* 重置默认样式 */
 * {
     margin: 0;                      /* 清除外边距 */
     padding: 0;                     /* 清除内边距 */
     box-sizing: border-box;         /* 使用边框盒模型 */
 }
-
 /* 页面基础样式 */
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;  /* 设置字体族 */
@@ -59,7 +54,6 @@ body {
     /* --- 调整 body padding-top 以匹配新的固定头部高度 --- */
     padding-top: var(--fixed-header-height);
 }
-
 /* 固定头部区域 */
 .fixed-header {
     position: fixed;                /* 固定定位 */
@@ -76,7 +70,6 @@ body {
     /* 添加 overflow: hidden 确保内容不超出指定高度 */
     overflow: hidden;
 }
-
 /* 顶部Banner区域样式 */
 .banner {
     /* --- 调整 Banner 高度为 250px --- */
@@ -94,7 +87,6 @@ body {
     position: relative;             /* 相对定位 */
     overflow: hidden;               /* 隐藏溢出内容 */
 }
-
 /* Banner遮罩层 */
 .banner::before {
     content: "";                    /* 伪元素内容为空 */
@@ -106,7 +98,6 @@ body {
     /* --- 调整径向渐变遮罩效果，降低透明度 --- */
     background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%);
 }
-
 /* Banner内容区域 */
 .banner-content {
     position: relative;             /* 相对定位 */
@@ -114,28 +105,24 @@ body {
     max-width: 800px;               /* 最大宽度 */
     padding: 20px;                  /* 内边距 */
 }
-
 /* Banner主标题样式 */
 .banner h1 {
     font-size: 2.5rem;                /* 字体大小 */
     margin-bottom: 10px;            /* 下边距 */
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);  /* 文字阴影效果 */
 }
-
 /* Banner副标题样式 */
 .banner p {
     font-size: 1.1rem;              /* 字体大小 */
     opacity: 0.9;                   /* 透明度 */
     text-shadow: 0 1px 5px rgba(0,0,0,0.5);   /* 文字阴影效果 */
 }
-
 /* 页面内容容器 */
 .container {
     max-width: 1200px;              /* 最大宽度 */
     margin: 0 auto;                 /* 水平居中 */
     padding: 20px;                  /* 内边距 */
 }
-
 /* 搜索框容器 */
 .search-box {
     max-width: 600px;               /* 最大宽度 */
@@ -143,7 +130,6 @@ body {
     margin: -22px auto 20px;         /* 外边距：上15px，左右自动，下20px */
     position: relative;             /* 相对定位，用于定位内部的放大镜图标 */
 }
-
 /* 搜索输入框样式 */
 .search-box input {
     width: 100%;                    /* 宽度100% */
@@ -156,7 +142,6 @@ body {
     outline: none;                  /* 无轮廓 */
     transition: all 0.3s ease;      /* 过渡动画 */
 }
-
 /* --- 新增：在搜索框内创建放大镜图标 --- */
 .search-box::before {
     content: "🔍";                  /* 伪元素内容为放大镜图标 */
@@ -170,12 +155,10 @@ body {
     pointer-events: none;           /* 确保图标不会阻挡鼠标事件 */
     z-index: 1;                     /* 确保图标在输入框内容之上 */
 }
-
 /* 搜索框获得焦点时的样式 */
 .search-box input:focus {
     box-shadow: 0 4px 25px rgba(64, 158, 255, 0.4);  /* 更明显的阴影效果 */
 }
-
 /* --- 特别为 fixed-header 内的 .container 添加样式 --- */
 .fixed-header > .container {
     width: 100%;              /* 宽度100%，使其撑满整个 fixed-header */
@@ -184,7 +167,6 @@ body {
     margin: 0;                /* 移除默认的左右auto margin */
     /* --- 保持原有的其他样式，如搜索框和分类导航的样式 --- */
 }
-
 /* 分类导航栏 */
 .category-nav {
     display: flex;                  /* 弹性布局 */
@@ -203,17 +185,14 @@ body {
     padding-bottom: 20px;           /* 下内边距 (保持不变或根据需要调整) */
     /* --- 其他原有样式 ... --- */
 }
-
 /* 隐藏 Webkit 浏览器 (Chrome, Safari) 的滚动条 (可选) */
 .category-nav::-webkit-scrollbar {
     display: none;
 }
-
 /* 隐藏 Webkit 浏览器 (Chrome, Safari) 的滚动条 (可选) */
 .category-nav::-webkit-scrollbar {
     display: none;
 }
-
 /* 分类按钮样式 */
 .category-btn {
     /* --- 调整按钮内边距和字体大小 --- */
@@ -235,7 +214,6 @@ body {
     /* 添加 white-space: nowrap 防止按钮文字换行 */
     white-space: nowrap;
 }
-
 /* 分类按钮悬停和激活状态 */
 .category-btn:hover, .category-btn.active {
     background: var(--primary-color);            /* 背景色变为蓝色 */
@@ -243,24 +221,20 @@ body {
     transform: translateY(-2px);    /* 向上移动2px */
     box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);  /* 更明显的阴影 */
 }
-
 /* 页面主要内容区域 - 移除padding-top，使用body的padding-top */
 .main-content {
     /* 不再需要额外的padding-top */
 }
-
 /* 分类内容区域 */
 .category-group {
     margin-bottom: 40px;            /* 下边距 */
     /* --- 调整 scroll-margin-top 以匹配新的固定头部高度 --- */
     scroll-margin-top: var(--scroll-offset);
 }
-
 /* 最后一个分类区域去除下边距 */
 .category-group:last-child {
     margin-bottom: 0;
 }
-
 /* 搜索结果容器 */
 .search-results {
     display: none;                  /* 默认隐藏 */
@@ -268,7 +242,6 @@ body {
     /* --- 调整 scroll-margin-top --- */
     scroll-margin-top: var(--scroll-offset);
 }
-
 /* 分类标题栏 */
 .category-header {
     display: flex;                  /* 弹性布局 */
@@ -280,7 +253,6 @@ body {
     scroll-margin-top: var(--scroll-offset);
     gap: 12px; /* 图标和文字间距 (增大) */
 }
-
 /* 分类标题样式 */
 .category-header h2 {
     font-size: 1.5rem;              /* 字体大小 */
@@ -290,21 +262,18 @@ body {
     align-items: center;
     gap: 12px; /* 图标和文字间距 (增大) */
 }
-
 /* 分类描述样式 */
 .category-header .category-desc {
     color: var(--info-color);       /* 文字颜色 */
     font-size: 0.9rem;              /* 字体大小 */
     margin: 0;                      /* 移除默认margin */
 }
-
 /* 网站链接列表 */
 .websites-list {
     display: flex;                  /* 弹性布局 */
     flex-wrap: wrap;                /* 允许换行 */
     gap: 15px;                      /* 项目间距 */
 }
-
 /* 单个网站链接项 */
 .website-item {
     display: flex;                  /* 弹性布局 */
@@ -317,14 +286,97 @@ body {
     text-decoration: none;          /* 无下划线 */
     color: inherit;                 /* 继承文字颜色 */
     min-width: 200px;               /* 最小宽度 */
+    /* 新增：固定宽度和高度 */
+    width: 200px;
+    height: 60px;
+    /* 新增：超出内容隐藏 */
+    overflow: hidden;
+    /* 新增：相对定位，为提示框定位做准备 */
+    position: relative; /* 关键：为伪元素提供定位上下文 */
 }
-
 /* 网站链接项悬停效果 */
 .website-item:hover {
     transform: translateY(-3px);    /* 向上移动3px */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);   /* 更明显的阴影 */
+    /* 移除原来的 overflow: visible 和 z-index，因为我们不改变布局 */
+    /* overflow: visible; */
+    /* z-index: 100; */
 }
-
+/* 网站信息区域 */
+.website-info {
+    /* 新增：确保信息区域不会超出容器 */
+    overflow: hidden; /* 关键：实现省略号效果 */
+    flex: 1;
+    position: relative; /* 为内部元素定位提供参考 */
+    /* 移除原来的悬停相关样式 */
+    /* overflow: visible; */
+}
+/* 网站信息区域标题 */
+.website-info h3 {
+    font-size: 15px;                /* 字体大小 */
+    margin-bottom: 3px;             /* 下边距 */
+    white-space: nowrap;            /* 不换行 */
+    overflow: hidden;               /* 隐藏溢出内容 */
+    text-overflow: ellipsis;        /* 省略号 */
+    transition: all 0.3s ease;
+    position: relative; /* 关键：为伪元素提供定位上下文 */
+    margin: 0; /* 确保没有额外边距影响布局 */
+    padding: 0;
+    display: block; /* 确保是块级元素以便悬停 */
+}
+/* 网站信息区域描述 */
+.website-info p {
+    font-size: 12px;                /* 字体大小 */
+    color: var(--info-color);       /* 文字颜色 */
+    margin: 0;                      /* 清除外边距 */
+    white-space: nowrap;            /* 不换行 */
+    overflow: hidden;               /* 隐藏溢出内容 */
+    text-overflow: ellipsis;        /* 省略号 */
+    transition: all 0.3s ease;
+    position: relative; /* 关键：为伪元素提供定位上下文 */
+    padding: 0;
+    display: block; /* 确保是块级元素以便悬停 */
+}
+/* --- 新增：悬停时显示完整标题内容 (使用 title 属性) --- */
+.website-info h3:hover::after {
+    content: attr(title); /* 从 title 属性获取内容 */
+    position: absolute;
+    left: 0;
+    top: 100%; /* 显示在元素下方 */
+    background: white; /* 白色背景 */
+    border: 1px solid #000; /* 黑色边框 */
+    padding: 4px 8px;
+    font-size: 12px;
+    color: var(--text-color); /* 使用默认文字颜色 */
+    z-index: 10; /* 确保在其他元素之上 */
+    width: max-content;
+    max-width: 250px; /* 限制最大宽度 */
+    word-break: break-all; /* 允许长单词换行 */
+    line-height: 1.4;
+    box-shadow: none; /* 无阴影 */
+    border-radius: 0; /* 无圆角 */
+    pointer-events: none; /* 防止提示框干扰鼠标事件 */
+}
+/* --- 新增：悬停时显示完整描述内容 (使用 title 属性) --- */
+.website-info p:hover::after {
+    content: attr(title); /* 从 title 属性获取内容 */
+    position: absolute;
+    left: 0;
+    top: 100%; /* 显示在元素下方 */
+    background: white; /* 白色背景 */
+    border: 1px solid #000; /* 黑色边框 */
+    padding: 4px 8px;
+    font-size: 12px;
+    color: var(--info-color); /* 使用描述文字颜色 */
+    z-index: 10; /* 确保在其他元素之上 */
+    width: max-content;
+    max-width: 250px; /* 限制最大宽度 */
+    word-break: break-all; /* 允许长单词换行 */
+    line-height: 1.4;
+    box-shadow: none; /* 无阴影 */
+    border-radius: 0; /* 无圆角 */
+    pointer-events: none; /* 防止提示框干扰鼠标事件 */
+}
 /* 网站图标容器 */
 .website-icon {
     width: 36px;                    /* 宽度 */
@@ -348,7 +400,6 @@ body {
     /* 添加过渡动画 */
     transition: filter 0.3s ease, background-color 0.3s ease;
 }
-
 /* 网站图标图片样式 (针对网站favicon) */
 .website-icon img {
     /* --- 保持图片原始尺寸，例如 16x16, 32x32 --- */
@@ -360,7 +411,6 @@ body {
     display: block; /* 使 margin: auto 生效 */
     margin: auto;
 }
-
 /* --- 彩色图标核心样式 --- */
 /* 为包含文本（首字母）的 .website-icon 应用基础背景色 */
 .website-icon:not(:has(> img)):not(:empty) { /* 选择不包含img子元素但非空的 .website-icon */
@@ -368,7 +418,6 @@ body {
     background-color: var(--icon-bg-color, var(--primary-color)); /* 默认使用主题主色 */
     color: white; /* 白色文字 */
 }
-
 /* 为不同的网站图标应用不同的背景色 */
 /* 使用 websites-list 下的 .website-item 的 nth-child 来选择不同的图标 */
 .websites-list .website-item:nth-child(8n+1) .website-icon:not(:has(> img)):not(:empty) {
@@ -395,25 +444,6 @@ body {
 .websites-list .website-item:nth-child(8n+8) .website-icon:not(:has(> img)):not(:empty) {
     --icon-bg-color: var(--icon-bg-color-8);
 }
-
-/* 网站信息区域 */
-.website-info h3 {
-    font-size: 15px;                /* 字体大小 */
-    margin-bottom: 3px;             /* 下边距 */
-    white-space: nowrap;            /* 不换行 */
-    overflow: hidden;               /* 隐藏溢出内容 */
-    text-overflow: ellipsis;        /* 省略号 */
-}
-
-.website-info p {
-    font-size: 12px;                /* 字体大小 */
-    color: var(--info-color);       /* 文字颜色 */
-    margin: 0;                      /* 清除外边距 */
-    white-space: nowrap;            /* 不换行 */
-    overflow: hidden;               /* 隐藏溢出内容 */
-    text-overflow: ellipsis;        /* 省略号 */
-}
-
 /* 页面底部 */
 footer {
     text-align: center;             /* 文字居中 */
@@ -424,7 +454,6 @@ footer {
     /* --- 修改文字颜色 --- */
     color: var(--info-color);       /* 设置默认文字颜色为灰色 */
 }
-
 /* --- 为 footer 内的链接添加特殊样式 --- */
 footer a {
     /* 继承父元素 (footer) 的颜色 */
@@ -432,7 +461,6 @@ footer a {
     /* 去除下划线 */
     text-decoration: none;
 }
-
 /* --- 为 footer 内的链接添加悬停效果 (可选) --- */
 footer a:hover {
     /* 可以稍微调整颜色或添加下划线表示悬停 */
@@ -442,7 +470,6 @@ footer a:hover {
     text-decoration: underline;
     /* 这里我们先不加特殊悬停效果，保持简洁 */
 }
-
 /* 响应式设计 - 平板及以下设备 */
 @media (max-width: 768px) {
     :root {
@@ -451,32 +478,26 @@ footer a:hover {
         --banner-height: 200px;       /* 移动端 Banner 高度 (调整) */
         --scroll-offset: calc(var(--fixed-header-height) + 20px);
     }
-
     /* 调整body padding */
     body {
         padding-top: var(--fixed-header-height);
     }
-
     /* Banner高度调整 */
     .banner {
         height: var(--banner-height);
     }
-
     /* Banner主标题字体大小调整 */
     .banner h1 {
         font-size: 2rem;
     }
-
     /* Banner副标题字体大小调整 */
     .banner p {
         font-size: 1rem;
     }
-
     /* 搜索框外边距调整 (移动端也需要调整负边距) */
     .search-box {
         margin: -30px auto 25px; /* 调整移动端外边距 */
     }
-
     /* --- 移动端分类导航栏调整 --- */
     .category-nav {
         /* 在移动端允许换行以适应小屏幕 */
@@ -485,36 +506,70 @@ footer a:hover {
         margin: 25px 0 5px 0; /* 调整移动端外边距，下边距更小 */
         padding-bottom: 10px; /* 调整移动端内边距 */
     }
-
     /* 分类按钮内边距和字体大小调整 */
     .category-btn {
         padding: 8px 18px; /* 调整移动端内边距 */
         font-size: 14px;   /* 调整移动端字体大小 */
     }
-
     /* 网站链接项最小宽度调整 */
     .website-item {
         min-width: 100%;
+        /* 移动端适配：移除固定宽度，使用100%宽度 */
+        width: 100%;
+        /* 保持高度不变 */
+        height: 60px;
     }
-
+    /* --- 新增：移动端可能不需要悬停提示，可以隐藏 --- */
+    .website-info h3:hover::after,
+    .website-info p:hover::after {
+        display: none; /* 在小屏幕上禁用悬停提示 */
+    }
     /* 分类标题栏调整为垂直布局 */
     .category-header {
         flex-direction: column;
         align-items: flex-start;
     }
-
     /* 分类标题下边距调整 */
     .category-header h2 {
         margin-bottom: 5px;
     }
-
     /* 容器内边距调整 */
     .container {
         padding: 15px;
     }
-
     /* 调整scroll-margin-top */
     .category-group, .category-header, .search-results {
         scroll-margin-top: var(--scroll-offset);
     }
+    /* 移动端悬停效果调整 - 移除旧的悬停样式 */
+    /*
+    .website-item:hover .website-info h3,
+    .website-item:hover .website-info p {
+        position: static;
+        box-shadow: none;
+        background: transparent;
+    }
+    */
+}
+
+/* 页面包装器，用于处理 flex 布局 */
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 确保包装器占用整个视口高度 */
+}
+
+/* 主要内容占用可用空间 */
+.main-content {
+    flex: 1 0 auto; /* 允许主要内容增长，但不会缩减到低于其内容高度 */
+}
+
+/* 页脚保持在底部 */
+footer {
+    flex-shrink: 0; /* 防止页脚缩减 */
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 30px;
+    background: #2C3E50;
+    color: var(--info-color);
 }
