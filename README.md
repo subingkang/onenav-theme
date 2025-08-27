@@ -333,6 +333,10 @@ const headerResizeObserver = new ResizeObserver(function(entries) {
 
 本主题采用开源协议，允许自由使用、修改和分发。如果您在项目中使用了本主题，欢迎保留作者信息。
 
+## 🎨 效果预览
+
+![预览图](https://nav.subkme.com/screenshot.png)
+
 ## 🙏 致谢与支持
 
 - 感谢 [OneNav](https://github.com/helloxz/onenav) 项目提供优秀的导航系统基础
