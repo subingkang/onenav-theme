@@ -335,7 +335,7 @@ const headerResizeObserver = new ResizeObserver(function(entries) {
 
 ## 🎨 效果预览
 
-![预览图](https://nav.subkme.com/screenshot.png)
+![预览图](https://nav.subkme.com/nav-screenshot.png)
 
 ## 🙏 致谢与支持
 
